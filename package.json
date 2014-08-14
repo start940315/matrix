@@ -1,0 +1,26 @@
+{
+  "name": "Matrix",
+  "version": "0.0.1",
+  "description": "This is a tiny repository to give us an easy way to manipulate the matrix3d value of transform in css3.",
+  "keywords": [
+    "demo",
+    "test/test.js"
+  ],
+  "author": "Startan",
+  "license": "MIT",
+  "main": "matrix.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/start940315/matrix.git"
+  },
+  "bugs": {
+    "url": "https://github.com/start940315/matrix/issues"
+  },
+  "homepage": "https://github.com/start940315/matrix",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  }
+}
