@@ -1,0 +1,223 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>Matrix demo</title>
+		<script src="jquery.js"></script>
+		<script src="matrix.js"></script>
+		<style>
+			ul {
+				list-style: none;
+			}
+			.result {
+				position: relative;
+				width: 400px;
+				height: 300px;
+				-webkit-perspective: 800;
+			}
+			.result img {
+				position: absolute;
+				left: 0;
+				top: 0;
+				width: 100%;
+			}
+			fieldset {
+				float: left;
+			}
+			table {
+				clear: both;
+			}
+			td {
+				width: 80px;
+				height: 20px;
+				text-align: center;
+			}
+		</style>
+	</head>
+	<body>
+		<h1>Matrix.js</h1>
+		<ul class="props">
+			<li>
+				<h2>rotate</h2>
+				<fieldset>
+					<label for="rx">rotateX：</label>
+					<input type="text" data-type="rotateX" name="rx" id="rx" value="0">
+				</fieldset>
+				<fieldset>
+					<label for="ry">rotateY：</label>
+					<input type="text" data-type="rotateY" name="ry" id="ry" value="0">
+				</fieldset>
+				<fieldset>
+					<label for="rz">rotateZ：</label>
+					<input type="text" data-type="rotateZ" name="rz" id="rz" value="0">
+				</fieldset>
+				<table class="matrix">
+					<caption>对应的矩阵</caption>
+					<tr>
+						<td>1</td>
+						<td>0</td>
+						<td>0</td>
+						<td>0</td>
+					</tr>
+					<tr>
+						<td>0</td>
+						<td>1</td>
+						<td>0</td>
+						<td>0</td>
+					</tr>
+					<tr>
+						<td>0</td>
+						<td>0</td>
+						<td>1</td>
+						<td>0</td>
+					</tr>
+					<tr>
+						<td>0</td>
+						<td>0</td>
+						<td>0</td>
+						<td>1</td>
+					</tr>
+				</table>
+				<p class="string"><span>对应的属性值：</span><span></span></p>
+				<div class="result">
+					<img src="girl.jpg" alt="girl">
+				</div>
+			</li>
+			<li>
+				<h2>translate</h2>
+				<fieldset>
+					<label for="tx">translateX：</label>
+					<input type="text" data-type="translateX" name="tx" id="tx" value="0">
+				</fieldset>
+				<fieldset>
+					<label for="ty">translateY：</label>
+					<input type="text" data-type="translateY" name="ty" id="ty" value="0">
+				</fieldset>
+				<fieldset>
+					<label for="tz">translateZ：</label>
+					<input type="text" data-type="translateZ" name="tz" id="tz" value="0">
+				</fieldset>
+				<table class="matrix">
+					<caption>对应的矩阵<caption>
+					<tr>
+						<td>1</td>
+						<td>0</td>
+						<td>0</td>
+						<td>0</td>
+					</tr>
+					<tr>
+						<td>0</td>
+						<td>1</td>
+						<td>0</td>
+						<td>0</td>
+					</tr>
+					<tr>
+						<td>0</td>
+						<td>0</td>
+						<td>1</td>
+						<td>0</td>
+					</tr>
+					<tr>
+						<td>0</td>
+						<td>0</td>
+						<td>0</td>
+						<td>1</td>
+					</tr>
+				</table>
+				<p class="string"><span>对应的属性值：</span><span></span></p>
+				<div class="result">
+					<img src="girl.jpg" alt="girl">
+				</div>
+			</li>
+			<li>
+				<h2>scale</h2>
+				<fieldset>
+					<label for="sx">scaleX：</label>
+					<input type="text" data-type="scaleX" name="sx" id="sx" value="0">
+				</fieldset>
+				<fieldset>
+					<label for="sy">scaleY：</label>
+					<input type="text" data-type="scaleY" name="sy" id="sy" value="0">
+				</fieldset>
+				<fieldset>
+					<label for="sz">scaleZ：</label>
+					<input type="text" data-type="scaleZ" name="sz" id="sz" value="0">
+				</fieldset>
+				<table class="matrix">
+					<caption>对应的矩阵<caption>
+					<tr>
+						<td>1</td>
+						<td>0</td>
+						<td>0</td>
+						<td>0</td>
+					</tr>
+					<tr>
+						<td>0</td>
+						<td>1</td>
+						<td>0</td>
+						<td>0</td>
+					</tr>
+					<tr>
+						<td>0</td>
+						<td>0</td>
+						<td>1</td>
+						<td>0</td>
+					</tr>
+					<tr>
+						<td>0</td>
+						<td>0</td>
+						<td>0</td>
+						<td>1</td>
+					</tr>
+				</table>
+				<p class="string"><span>对应的属性值：</span><span></span></p>
+				<div class="result">
+					<img src="girl.jpg" alt="girl">
+				</div>
+			</li>
+			<li>
+				<h2>skew</h2>
+				<fieldset>
+					<label for="skx">skewX：</label>
+					<input type="text" data-type="skewX" name="skx" id="skx" value="0">
+				</fieldset>
+				<fieldset>
+					<label for="ry">skewY：</label>
+					<input type="text" data-type="skewY" name="sky" id="sky" value="0">
+				</fieldset>
+				<table class="matrix">
+					<caption>对应的矩阵<caption>
+					<tr>
+						<td>1</td>
+						<td>0</td>
+						<td>0</td>
+						<td>0</td>
+					</tr>
+					<tr>
+						<td>0</td>
+						<td>1</td>
+						<td>0</td>
+						<td>0</td>
+					</tr>
+					<tr>
+						<td>0</td>
+						<td>0</td>
+						<td>1</td>
+						<td>0</td>
+					</tr>
+					<tr>
+						<td>0</td>
+						<td>0</td>
+						<td>0</td>
+						<td>1</td>
+					</tr>
+				</table>
+				<p class="string"><span>对应的属性值：</span><span></span></p>
+				<div class="result">
+					<img src="girl.jpg" alt="girl">
+				</div>
+			</li>
+		</ul>
+		<script src="demo.js"></script>
+	</body>
+</html>
