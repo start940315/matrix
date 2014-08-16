@@ -1,4 +1,31 @@
-var Matrix = function() {
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: /Users/tanxing/git/matrix/matrix.js</title>
+    
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+    
+    <h1 class="page-title">Source: /Users/tanxing/git/matrix/matrix.js</h1>
+    
+    
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>var Matrix = function() {
     /**
      * cache the slice method of Array to use in other place such as to slice the arguments
      * @inner
@@ -27,7 +54,7 @@ var Matrix = function() {
          * @inner
          */
         isNaN = isNaN || function(num) {
-            return (typeof num === "number" || num instanceof Number) && (num + 0 !== num);
+            return (typeof num === "number" || num instanceof Number) &amp;&amp; (num + 0 !== num);
         }
         /**
          * @name toFixed
@@ -93,14 +120,14 @@ var Matrix = function() {
         if(this === context) {
             return new Matrix(args);
         }
-        if( typeof args[0] !== "undefined" && args[0].length === 16) {
+        if( typeof args[0] !== "undefined" &amp;&amp; args[0].length === 16) {
             args = args[0];
         } else if(args.length !== 16) {
             flag = true;
         }
-        for(i = 0; i < len; i++) {
+        for(i = 0; i &lt; len; i++) {
             this[i] = [];
-            for(j = 0; j < len; j++) {
+            for(j = 0; j &lt; len; j++) {
                 this[i][j] = flag ? 0 : toFixed( args[i*len+j], 6 );
             }
         }
@@ -121,8 +148,8 @@ var Matrix = function() {
     mpt.toString = function() {
         var i,j,len = 4;
         var res = "matrix3d(";
-        for(i = 0; i < len; i++) {
-            for(j = 0; j < len; j++) {
+        for(i = 0; i &lt; len; i++) {
+            for(j = 0; j &lt; len; j++) {
                 res += (this[i][j] + ",");
             }
         }
@@ -148,134 +175,6 @@ var Matrix = function() {
     mpt.rby = function(m) {
         return Matrix.by(this, m);
     }
-    /**
-     * the method used by the instance of Matrix to rotate
-     * @name rotate
-     * @param {Number} x
-     * @param {Number} y
-     * @param {Number} z
-     * @method
-     */
-     mpt.rotate = function(x, y, z) {
-        return this.by( Matrix.rotate(x, y, z) );
-     }
-     /**
-     * the method used by the instance of Matrix to rotateX.
-     * @name rotateX
-     * @method
-     * @param {Number} x
-     * @return the ratation Matrix
-     */
-    mpt.rotateX = function(deg) {
-        return this.by( Matrix.rotateX(deg) );
-    }
-    /**
-     * the method used by the instance of Matrix to rotateY.
-     * @name rotateY
-     * @method
-     * @param {Number} y
-     * @return the ratation Matrix
-     */
-    mpt.rotateY = function(deg) {
-        return this.by( Matrix.rotateY(deg) );
-    }
-    /**
-     * the method used by the instance of Matrix to rotateZ.
-     * @name rotateZ
-     * @method
-     * @param {Number} z
-     * @return the ratation Matrix
-     */
-    mpt.rotateZ = function(deg) {
-        return this.by( Matrix.rotateZ(deg) );
-    }
-    /**
-     * the method used by the instance of Matrix to translate.
-     * @name translate
-     * @method
-     * @param {Number} x
-     * @param {Number} y
-     * @param {Number} z
-     * @return the translation Matrix
-     */
-    mpt.translate = function(x, y, z) {
-        return this.by( Matrix.translate(x, y, z) );
-    }
-    /**
-     * the method used by the instance of Matrix to translateX.
-     * @name translateX
-     * @method
-     * @param {Number} x
-     * @return the translation Matrix
-     */
-    mpt.translateX = function(dis) {
-        return this.by( Matrix.translateX(dis) )
-    }
-    /**
-     * the method used by the instance of Matrix to translateY.
-     * @name translateY
-     * @method
-     * @param {Number} y
-     * @return the translation Matrix
-     */
-    mpt.translateY = function(dis) {
-        return this.by( Matrix.translateY(dis) );
-    }
-    /**
-     * the method used by the instance of Matrix to translateZ.
-     * @name translateZ
-     * @method
-     * @param {Number} z
-     * @return the translation Matrix
-     */
-    mpt.translateZ = function(dis) {
-        return this.by( Matrix.translateZ(dis) );
-    }
-
-    /**
-     * the method used by the instance of Matrix to scale.
-     * @name scale
-     * @method
-     * @param {Number} x
-     * @param {Number} y
-     * @param {Number} z
-     * @return the scaling Matrix
-     */
-    mpt.scale = function(x, y, z) {
-        return this.by( Matrix.scale(x, y, z) );
-    }
-    /**
-     * the method used by the instance of Matrix to skew.
-     * @name Matrix.skew
-     * @method
-     * @param {Number} Xdeg
-     * @param {Number} Ydeg
-     * @return the skewing Matrix
-     */
-    mpt.skew = function(x, y, z) {
-        return this.by( Matrix.skew(x, y, z) );
-    }
-    /**
-     * the method used by the instance of Matrix to skewX.
-     * @name Matrix.skewX
-     * @method
-     * @param {Number} deg
-     * @return the skewed Matrix
-     */
-    mpt.skewX = function(deg) {
-        return this.by( Matrix.skewX(deg) );
-    }
-    /**
-     * the method attach to the Matrix to create a Matrix with an arguments as the skewing dimension relate to y axis.
-     * @name Matrix.skewY
-     * @method
-     * @param {Number} deg
-     * @return the skewed Matrix
-     */
-    mpt.skewY = function(deg) {
-        return this.by( Matrix.skewY(deg) );
-    }
-
 
     /**
      * the method attach to the Matrix to generate a base Matrix
@@ -301,8 +200,8 @@ var Matrix = function() {
      */
     Matrix.isBase = function(m) {
         var i,j,len = 4;
-        for(i = 0; i < len; i++) {
-            for(j = 0; j < len; j++) {
+        for(i = 0; i &lt; len; i++) {
+            for(j = 0; j &lt; len; j++) {
                 if(m[i][j] !== baseArray[i][j]) {
                     return false;
                 }
@@ -319,8 +218,8 @@ var Matrix = function() {
      */
     Matrix.isZero = function(m) {
         var i,j,len = 4;
-        for(i = 0; i < len; i++) {
-            for(j = 0; j < len; j++) {
+        for(i = 0; i &lt; len; i++) {
+            for(j = 0; j &lt; len; j++) {
                 if(m[i][j] !== 0) {
                     return false;
                 }
@@ -341,17 +240,17 @@ var Matrix = function() {
         var i, j, k, len1, len2, len3;
         var res = Matrix(), temp = 0;
         var test = 0;
-        for(i = 0, len1 = 3; i < len1; i++) {
-            for(j = 0, len2 = 3; j < len2; j++ ) {
+        for(i = 0, len1 = 3; i &lt; len1; i++) {
+            for(j = 0, len2 = 3; j &lt; len2; j++ ) {
                 temp = 0;
-                for(k = 0, len3 = len2; k < len3; k++) {
+                for(k = 0, len3 = len2; k &lt; len3; k++) {
                     temp += m1[i][k]*m2[k][j];
                 }
                 res[i][j] = toFixed( temp, 6 );
             }
             res[i][j] = 0;
         }
-        for(j = 0; j < 3; j++) {
+        for(j = 0; j &lt; 3; j++) {
             res[i][j] = m1[i][j] + m2[i][j];
         }
         res[i][j] = 1;
@@ -634,3 +533,26 @@ if(typeof window === "undefined") {
 
 
 
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Index</a></h2><h3>Modules</h3><ul><li><a href="matrix_.html">/Users/tanxing/git/matrix/matrix</a></li></ul><h3>Classes</h3><ul><li><a href="Matrix.html">Matrix</a></li></ul><h3>Global</h3><ul><li><a href="global.html#by">by</a></li><li><a href="global.html#cos">cos</a></li><li><a href="global.html#isNaN">isNaN</a></li><li><a href="global.html#rby">rby</a></li><li><a href="global.html#sin">sin</a></li><li><a href="global.html#tan">tan</a></li><li><a href="global.html#toFixed">toFixed</a></li><li><a href="global.html#toString">toString</a></li></ul>
+</nav>
+
+<br clear="both">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-alpha3</a> on Fri Aug 15 2014 09:41:47 GMT+0800 (CST)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>
