@@ -140,6 +140,16 @@ var Matrix = function() {
         return Matrix.by(m, this);
     }
     /**
+     * the method used by the instance of Matrix to imply a scalar-multiply operation.
+     * @name sby
+     * @method
+     * @param {Matrix} num
+     * @return the result Matrix
+     */
+    mpt.sby = function(num) {
+        return Matrix.sby(this, num);
+    }
+    /**
      * the method used by the instance of Matrix to right multiply an Matrix
      * @name rby
      * @param {Matrix} Matrix
@@ -357,6 +367,24 @@ var Matrix = function() {
         res[i][j] = 1;
         return res;
     }
+    /**
+     * the method attach to the Matrix to imply a scalar-multiply operation.
+     * @name Matrix.sby
+     * @method
+     * @param {Matrix} Matrix
+     * @param {Matrix} num
+     * @return the result Matrix
+     */
+    Matrix.sby = function(m, num) {
+        var i, j, len1, len2;
+        for(i = 0, len1 = 3; i < len1; i++) {
+            for(j = 0, len2 = 3; j < len2; j++ ) {
+                m[i][j] = toFixed( m[i][j]*num, 6 );
+            }
+        }
+        return m;
+    }
+
 
     /**
      * the method attach to the Matrix to format the arguments passed in Matrix.rotate/Matrix.translate/Matrix.scale/Matrix.skew
