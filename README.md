@@ -1,4 +1,4 @@
-matrix
-======
-
 This is a tiny repository to give us an easy way to manipulate the matrix3d value of transform in css3.
+####
+>The repository provides a method that can make your transform animation easy by using javascript. When you create a Matrix instance, you can rotate it, scale it, translate it and skew it. You'll now think that the native object CSSMatrix can do this also. But Matrix can do more. You can multiply 2 matrixes and it means that you want to combine two defferent transformation into one. And you also can scalar-multiply one matrix that means you just want to do partial transformation. The second makes it easy to make a smooth effect when doing transformation. That was so great. Not only those, Matrix is more readable because it just like an Array instance and actually, Matrix inherits from Array. Try this awsome repository, you'll find it great! 
+>BTW, leave me a message when you have any problem with the repository. If you have a good idea to make it better, I'll be very happy to have you join 'me'. All you need to do is to contact me.
