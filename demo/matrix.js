@@ -24,6 +24,7 @@ var Matrix = function() {
          * @name isNaN
          * @desc 封装好的isNaN，保证了低版本浏览器的兼容性。
          * @param {Number} 角度
+         * @inner
          */
         isNaN = isNaN || function(num) {
             return (typeof num === "number" || num instanceof Number) && (num + 0 !== num);
@@ -33,6 +34,7 @@ var Matrix = function() {
          * @desc 改良的toFixed方法，输入的第一个参数不能转化为数字时，返回为0
          * @param {Number} 数字
          * @param {Number} 保留位数
+         * @inner
          */
         ,toFixed = function(num, dig) {
             num = Number(num);
@@ -49,6 +51,7 @@ var Matrix = function() {
          * @name sin
          * @desc 封装好的正弦函数
          * @param {Number} 角度
+         * @inner
          */
         ,sin = function(deg) {
             return toFixed( Math.sin(deg), 6 );
@@ -57,6 +60,7 @@ var Matrix = function() {
          * @name cos
          * @desc 封装好的余弦函数
          * @param {Number} 角度
+         * @inner
          */
         ,cos = function(deg) {
             return toFixed( Math.cos(deg), 6 );
@@ -65,6 +69,7 @@ var Matrix = function() {
          * @name tan
          * @desc 封装好的正切函数
          * @param {Number} 角度
+         * @inner
          */
         ,tan = function(deg) {
             return toFixed( Math.tan(deg), 6 );
@@ -78,9 +83,8 @@ var Matrix = function() {
      * @desc 可以通过new和调用函数的方式来创建一个矩阵对象，当没有传入参数或者参数不符合要求是，返回一个全0矩阵。
      * @extends Array
      * @requires js基本数据类型和内置方法
-     * @param {?Array} 一个包含16个数的数组，用于自上向下，自左向右填满4*4的矩阵；或者没有传入参数
-     * @param {?Number} 参数共16个，为填满矩阵的数字；或者没有传入参数
-     * @global the function will be exposed to window if the enviroment is in browser.
+     * @param {Array= | Number=} 数组 | 16个数字
+     * @global 
      * @return the instance of Matrix if used as funcion
      */
     function Matrix() {
@@ -111,6 +115,7 @@ var Matrix = function() {
 
     /**
      * rewrite the toString method of Matrix to give us a css3 value .
+     * @name toString
      * @method
      */
     mpt.toString = function() {
@@ -127,21 +132,164 @@ var Matrix = function() {
     }
     /**
      * the method used by the instance of Matrix to left multiply an Matrix
+     * @name by
+     * @param {Matrix} Matrix
      * @method
      */
     mpt.by = function(m) {
         return Matrix.by(m, this);
     }
     /**
+     * the method used by the instance of Matrix to imply a scalar-multiply operation.
+     * @name sby
+     * @method
+     * @param {Matrix} num
+     * @return the result Matrix
+     */
+    mpt.sby = function(num) {
+        return Matrix.sby(this, num);
+    }
+    /**
      * the method used by the instance of Matrix to right multiply an Matrix
+     * @name rby
+     * @param {Matrix} Matrix
      * @method
      */
     mpt.rby = function(m) {
         return Matrix.by(this, m);
     }
+    /**
+     * the method used by the instance of Matrix to rotate
+     * @name rotate
+     * @param {Number} x
+     * @param {Number} y
+     * @param {Number} z
+     * @method
+     */
+     mpt.rotate = function(x, y, z) {
+        return this.by( Matrix.rotate(x, y, z) );
+     }
+     /**
+     * the method used by the instance of Matrix to rotateX.
+     * @name rotateX
+     * @method
+     * @param {Number} x
+     * @return the ratation Matrix
+     */
+    mpt.rotateX = function(deg) {
+        return this.by( Matrix.rotateX(deg) );
+    }
+    /**
+     * the method used by the instance of Matrix to rotateY.
+     * @name rotateY
+     * @method
+     * @param {Number} y
+     * @return the ratation Matrix
+     */
+    mpt.rotateY = function(deg) {
+        return this.by( Matrix.rotateY(deg) );
+    }
+    /**
+     * the method used by the instance of Matrix to rotateZ.
+     * @name rotateZ
+     * @method
+     * @param {Number} z
+     * @return the ratation Matrix
+     */
+    mpt.rotateZ = function(deg) {
+        return this.by( Matrix.rotateZ(deg) );
+    }
+    /**
+     * the method used by the instance of Matrix to translate.
+     * @name translate
+     * @method
+     * @param {Number} x
+     * @param {Number} y
+     * @param {Number} z
+     * @return the translation Matrix
+     */
+    mpt.translate = function(x, y, z) {
+        return this.by( Matrix.translate(x, y, z) );
+    }
+    /**
+     * the method used by the instance of Matrix to translateX.
+     * @name translateX
+     * @method
+     * @param {Number} x
+     * @return the translation Matrix
+     */
+    mpt.translateX = function(dis) {
+        return this.by( Matrix.translateX(dis) )
+    }
+    /**
+     * the method used by the instance of Matrix to translateY.
+     * @name translateY
+     * @method
+     * @param {Number} y
+     * @return the translation Matrix
+     */
+    mpt.translateY = function(dis) {
+        return this.by( Matrix.translateY(dis) );
+    }
+    /**
+     * the method used by the instance of Matrix to translateZ.
+     * @name translateZ
+     * @method
+     * @param {Number} z
+     * @return the translation Matrix
+     */
+    mpt.translateZ = function(dis) {
+        return this.by( Matrix.translateZ(dis) );
+    }
+
+    /**
+     * the method used by the instance of Matrix to scale.
+     * @name scale
+     * @method
+     * @param {Number} x
+     * @param {Number} y
+     * @param {Number} z
+     * @return the scaling Matrix
+     */
+    mpt.scale = function(x, y, z) {
+        return this.by( Matrix.scale(x, y, z) );
+    }
+    /**
+     * the method used by the instance of Matrix to skew.
+     * @name Matrix.skew
+     * @method
+     * @param {Number} Xdeg
+     * @param {Number} Ydeg
+     * @return the skewing Matrix
+     */
+    mpt.skew = function(x, y, z) {
+        return this.by( Matrix.skew(x, y, z) );
+    }
+    /**
+     * the method used by the instance of Matrix to skewX.
+     * @name Matrix.skewX
+     * @method
+     * @param {Number} deg
+     * @return the skewed Matrix
+     */
+    mpt.skewX = function(deg) {
+        return this.by( Matrix.skewX(deg) );
+    }
+    /**
+     * the method attach to the Matrix to create a Matrix with an arguments as the skewing dimension relate to y axis.
+     * @name Matrix.skewY
+     * @method
+     * @param {Number} deg
+     * @return the skewed Matrix
+     */
+    mpt.skewY = function(deg) {
+        return this.by( Matrix.skewY(deg) );
+    }
+
 
     /**
      * the method attach to the Matrix to generate a base Matrix
+     * @name Matrix.base
      * @method
      * @return a base Matrix
      */
@@ -156,8 +304,9 @@ var Matrix = function() {
 
     /**
      * the method attach to the Matrix to test if a Matrix is a base Matrix
+     * @name Matrix.isBase
      * @method
-     * @param {Matrix} give an Matrix to test
+     * @param {Matrix} Matrix
      * @return true if the Matrix is a base Matrix, otherwise false
      */
     Matrix.isBase = function(m) {
@@ -173,8 +322,9 @@ var Matrix = function() {
     }
     /**
      * the method attach to the Matrix to test if a Matrix is a zero Matrix
+     * @name Matrix.isZero
      * @method
-     * @param {Matrix} give an Matrix to test
+     * @param {Matrix} Matrix
      * @return true if the Matrix is a zero Matrix, otherwise false
      */
     Matrix.isZero = function(m) {
@@ -191,9 +341,10 @@ var Matrix = function() {
 
     /**
      * the method attach to the Matrix to multiply two Matrix
+     * @name Matrix.by
      * @method
-     * @param {Matrix} the Matrix to be multiplied
-     * @param {Matrix} the Matrix to be multiplied
+     * @param {Matrix} Matrix
+     * @param {Matrix} Matrix
      * @return the result Matrix
      */
     Matrix.by = function(m1, m2) {
@@ -216,13 +367,32 @@ var Matrix = function() {
         res[i][j] = 1;
         return res;
     }
+    /**
+     * the method attach to the Matrix to imply a scalar-multiply operation.
+     * @name Matrix.sby
+     * @method
+     * @param {Matrix} Matrix
+     * @param {Matrix} num
+     * @return the result Matrix
+     */
+    Matrix.sby = function(m, num) {
+        var i, j, len1, len2;
+        for(i = 0, len1 = 3; i < len1; i++) {
+            for(j = 0, len2 = 3; j < len2; j++ ) {
+                m[i][j] = toFixed( m[i][j]*num, 6 );
+            }
+        }
+        return m;
+    }
+
 
     /**
      * the method attach to the Matrix to format the arguments passed in Matrix.rotate/Matrix.translate/Matrix.scale/Matrix.skew
+     * @name Matrix.formatArgs
      * @method
-     * @param {Number} the value related to the x axis
-     * @param {Number} the value related to the y axis
-     * @param {Number} the value related to the y axis
+     * @param {Number} x
+     * @param {Number} y
+     * @param {Number} z
      * @return the formated arguments in a array
      */
     Matrix.formatArgs = function(x, y, z) {
@@ -245,10 +415,11 @@ var Matrix = function() {
 
     /**
      * the method attach to the Matrix to create a Matrix with 3 arguments as the rotation angle relate to x/y/z axis.
+     * @name Matrix.rotate
      * @method
-     * @param {Number} the angle related to the x axis
-     * @param {Number} the angle related to the y axis
-     * @param {Number} the angle related to the y axis
+     * @param {Number} x
+     * @param {Number} y
+     * @param {Number} z
      * @return the ratation Matrix
      */
     Matrix.rotate = function(x, y, z) {
@@ -262,8 +433,9 @@ var Matrix = function() {
     }
     /**
      * the method attach to the Matrix to create a Matrix with an argument as the rotation angle relate to x axis.
+     * @name Matrix.rotateX
      * @method
-     * @param {Number} the angle related to the x axis
+     * @param {Number} x
      * @return the ratation Matrix
      */
     Matrix.rotateX = function(deg) {
@@ -272,8 +444,9 @@ var Matrix = function() {
     }
     /**
      * the method attach to the Matrix to create a Matrix with an argument as the rotation angle relate to y axis.
+     * @name Matrix.rotateY
      * @method
-     * @param {Number} the angle related to the y axis
+     * @param {Number} y
      * @return the ratation Matrix
      */
     Matrix.rotateY = function(deg) {
@@ -282,8 +455,9 @@ var Matrix = function() {
     }
     /**
      * the method attach to the Matrix to create a Matrix with an argument as the rotation angle relate to z axis.
+     * @name Matrix.rotateZ
      * @method
-     * @param {Number} the angle related to the z axis
+     * @param {Number} z
      * @return the ratation Matrix
      */
     Matrix.rotateZ = function(deg) {
@@ -293,10 +467,11 @@ var Matrix = function() {
 
     /**
      * the method attach to the Matrix to create a Matrix with 3 arguments as the translation dimension relate to x/y/z axis.
+     * @name Matrix.translate
      * @method
-     * @param {Number} the dimension related to the x axis
-     * @param {Number} the dimension related to the y axis
-     * @param {Number} the dimension related to the z axis
+     * @param {Number} x
+     * @param {Number} y
+     * @param {Number} z
      * @return the translation Matrix
      */
     Matrix.translate = function(x, y, z) {
@@ -310,8 +485,9 @@ var Matrix = function() {
     }
     /**
      * the method attach to the Matrix to create a Matrix with an arguments as the translation dimension relate to x axis.
+     * @name Matrix.translateX
      * @method
-     * @param {Number} the dimension related to the x axis
+     * @param {Number} x
      * @return the translation Matrix
      */
     Matrix.translateX = function(dis) {
@@ -321,8 +497,9 @@ var Matrix = function() {
     }
     /**
      * the method attach to the Matrix to create a Matrix with an arguments as the translation dimension relate to y axis.
+     * @name Matrix.translateY
      * @method
-     * @param {Number} the dimension related to the y axis
+     * @param {Number} y
      * @return the translation Matrix
      */
     Matrix.translateY = function(dis) {
@@ -332,8 +509,9 @@ var Matrix = function() {
     }
     /**
      * the method attach to the Matrix to create a Matrix with an arguments as the translation dimension relate to z axis.
+     * @name Matrix.translateZ
      * @method
-     * @param {Number} the dimension related to the z axis
+     * @param {Number} z
      * @return the translation Matrix
      */
     Matrix.translateZ = function(dis) {
@@ -344,10 +522,11 @@ var Matrix = function() {
 
     /**
      * the method attach to the Matrix to create a Matrix with 3 arguments as the scaling dimension relate to x/y/z axis.
+     * @name Matrix.scale
      * @method
-     * @param {Number} the dimension related to the x axis
-     * @param {Number} the dimension related to the y axis
-     * @param {Number} the dimension related to the z axis
+     * @param {Number} x
+     * @param {Number} y
+     * @param {Number} z
      * @return the scaling Matrix
      */
     Matrix.scale = function(x, y, z) {
@@ -361,8 +540,9 @@ var Matrix = function() {
     }
     /**
      * the method attach to the Matrix to create a Matrix with an arguments as the scaling dimension relate to x axis.
+     * @name Matrix.scaleX
      * @method
-     * @param {Number} the dimension related to the x axis
+     * @param {Number} x
      * @return the scaling Matrix
      */
     Matrix.scaleX = function(dim) {
@@ -372,8 +552,9 @@ var Matrix = function() {
     }
     /**
      * the method attach to the Matrix to create a Matrix with an arguments as the scaling dimension relate to y axis.
+     * @name Matrix.scaleY
      * @method
-     * @param {Number} the dimension related to the y axis
+     * @param {Number} y
      * @return the scaling Matrix
      */
     Matrix.scaleY = function(dim) {
@@ -383,8 +564,9 @@ var Matrix = function() {
     }
     /**
      * the method attach to the Matrix to create a Matrix with an arguments as the scaling dimension relate to z axis.
+     * @name Matrix.scaleZ
      * @method
-     * @param {Number} the dimension related to the z axis
+     * @param {Number} z
      * @return the scaling Matrix
      */
     Matrix.scaleZ = function(dim) {
@@ -395,9 +577,10 @@ var Matrix = function() {
 
     /**
      * the method attach to the Matrix to create a Matrix with 2 arguments as the skewing angle relate to x/y/z axis.
+     * @name Matrix.skew
      * @method
-     * @param {Number} the dimension related to the x axis
-     * @param {Number} the dimension related to the y axis
+     * @param {Number} x
+     * @param {Number} y
      * @return the skewing Matrix
      */
     Matrix.skew = function(x, y, z) {
@@ -410,8 +593,9 @@ var Matrix = function() {
     }
     /**
      * the method attach to the Matrix to create a Matrix with an arguments as the skewing dimension relate to x axis.
+     * @name Matrix.skewX
      * @method
-     * @param {Number} the dimension related to the x axis
+     * @param {Number} x
      * @return the skewing Matrix
      */
     Matrix.skewX = function(deg) {
@@ -420,8 +604,9 @@ var Matrix = function() {
     }
     /**
      * the method attach to the Matrix to create a Matrix with an arguments as the skewing dimension relate to y axis.
+     * @name Matrix.skewY
      * @method
-     * @param {Number} the dimension related to the y axis
+     * @param {Number} y
      * @return the skewing Matrix
      */
     Matrix.skewY = function(deg) {
@@ -431,6 +616,7 @@ var Matrix = function() {
 
     /**
      * the method attach to the Matrix to translate angle to arc.
+     * @name Matrix.deg2arc
      * @method
      * @param {Number} angle
      * @return arc
@@ -443,6 +629,7 @@ var Matrix = function() {
     }
     /**
      * the method attach to the Matrix to translate arc to angle.
+     * @name Matrix.arc2deg
      * @method
      * @param {Number} arc
      * @return angle
