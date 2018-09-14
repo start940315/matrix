@@ -1,5 +1,7 @@
 {
   "collectCoverageFrom": [
     "matrix.js"
-  ]
+  ],
+  "collectCoverage": true,
+  "coverageReporters": ["json", "html"]
 }
