@@ -1,4 +1,4 @@
-好了，不装逼了，上中文
+Matrix &middot; [![Coverage Status](https://coveralls.io/repos/github/start940315/matrix/badge.svg?branch=master)](https://coveralls.io/github/start940315/matrix?branch=master)
 ###
 这个库可以做适用于css3的矩阵变换。
 
