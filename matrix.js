@@ -1,10 +1,5 @@
 var Matrix = function() {
     /**
-     * cache the slice method of Array to use in other place such as to slice the arguments
-     * @inner
-     */
-    var slice = Array.prototype.slice;
-    /**
      * the base Matrix value
      * @inner
      */
@@ -15,32 +10,35 @@ var Matrix = function() {
             [0, 0, 0, 1]
         ];
     /**
-     * the context of this file
+     * context
      * @inner
      */
     var context = typeof window !== "undefined" ? window : global;
 
     var /**
          * @name isNaN
-         * @desc 封装好的isNaN，保证了低版本浏览器的兼容性。
+         * @desc using es6 Number.isNaN with old browsers compatible.
          * @param {Number} 角度
          * @inner
          */
-        isNaN = isNaN || function(num) {
-            return (typeof num === "number" || num instanceof Number) && (num + 0 !== num);
+        isNaN = Number.isNaN || function(num) {
+            return (typeof num === "number" || num instanceof Number) && num !== num;
         }
         /**
          * @name toFixed
-         * @desc 改良的toFixed方法，输入的第一个参数不能转化为数字时，返回为0
+         * @desc help method for tranform prop support only 6 significant digits.
          * @param {Number} 数字
          * @param {Number} 保留位数
          * @inner
          */
         ,toFixed = function(num, dig) {
             num = Number(num);
-            dig = dig || 6
+            dig = dig || Matrix.precision;
             if( isNaN(num) ) {
                 num = 0;
+            }
+            if (!dig) {
+                return num;
             }
             num = num.toFixed(dig).toString();
             num = num.split(".");
@@ -49,41 +47,39 @@ var Matrix = function() {
         }
         /**
          * @name sin
-         * @desc 封装好的正弦函数
-         * @param {Number} 角度
+         * @desc sin function with precision
+         * @param {Number} deg angle unit
          * @inner
          */
         ,sin = function(deg) {
-            return toFixed( Math.sin(deg), 6 );
+            return toFixed( Math.sin(deg), Matrix.precision );
         }
         /**
          * @name cos
-         * @desc 封装好的余弦函数
-         * @param {Number} 角度
+         * @desc cos function with precision
+         * @param {Number} deg angle unit
          * @inner
          */
         ,cos = function(deg) {
-            return toFixed( Math.cos(deg), 6 );
+            return toFixed( Math.cos(deg), Matrix.precision );
         }
         /**
          * @name tan
-         * @desc 封装好的正切函数
-         * @param {Number} 角度
+         * @desc tan function with precision
+         * @param {Number} deg angle unit
          * @inner
          */
         ,tan = function(deg) {
-            return toFixed( Math.tan(deg), 6 );
+            return toFixed( Math.tan(deg), Matrix.precision );
         }
         ;
 
     /**
      * @name Matrix
      * @constructor 
-     * @classdesc 适用于css3的matrix3d的矩阵数据结构
-     * @desc 可以通过new和调用函数的方式来创建一个矩阵对象，当没有传入参数或者参数不符合要求是，返回一个全0矩阵。
+     * @desc data structure for css transform matrix
      * @extends Array
-     * @requires js基本数据类型和内置方法
-     * @param {Array= | Number=} 数组 | 16个数字
+     * @param {Array | Number[]} any 16 numbers array or 16 number arguments
      * @global 
      * @return the instance of Matrix if used as funcion
      */
@@ -101,15 +97,19 @@ var Matrix = function() {
         for(i = 0; i < len; i++) {
             this[i] = [];
             for(j = 0; j < len; j++) {
-                this[i][j] = flag ? 0 : toFixed( args[i*len+j], 6 );
+                this[i][j] = flag ? 0 : toFixed( args[i*len+j], Matrix.precision );
             }
         }
     }
     /**
+     * set default precision
+     */
+    Matrix.precision = 6;
+    /**
      * this virable is only used to make the prototype chain shorter in this file.
      * @inner
      */
-    var mpt = Matrix.prototype = new Array();
+    var mpt = Matrix.prototype = [];
     /** reset the constructor in Matrix's prototype */
     mpt.constructor = Matrix;
 
@@ -131,35 +131,35 @@ var Matrix = function() {
         return res;
     }
     /**
-     * the method used by the instance of Matrix to left multiply an Matrix
-     * @name by
+     * the method used mul the instance of Matrix to left multiply an Matrix
+     * @name mul
      * @param {Matrix} Matrix
      * @method
      */
-    mpt.by = function(m) {
-        return Matrix.by(m, this);
+    mpt.mul = function(m) {
+        return Matrix.mul(m, this);
     }
     /**
-     * the method used by the instance of Matrix to imply a scalar-multiply operation.
-     * @name sby
+     * the method used mul the instance of Matrix to imply a scalar-multiply operation.
+     * @name smul
      * @method
      * @param {Matrix} num
      * @return the result Matrix
      */
-    mpt.sby = function(num) {
-        return Matrix.sby(this, num);
+    mpt.smul = function(num) {
+        return Matrix.smul(this, num);
     }
     /**
-     * the method used by the instance of Matrix to right multiply an Matrix
-     * @name rby
+     * the method used mul the instance of Matrix to right multiply an Matrix
+     * @name rmul
      * @param {Matrix} Matrix
      * @method
      */
-    mpt.rby = function(m) {
-        return Matrix.by(this, m);
+    mpt.rmul = function(m) {
+        return Matrix.mul(this, m);
     }
     /**
-     * the method used by the instance of Matrix to rotate
+     * the method used mul the instance of Matrix to rotate
      * @name rotate
      * @param {Number} x
      * @param {Number} y
@@ -167,7 +167,7 @@ var Matrix = function() {
      * @method
      */
      mpt.rotate = function(x, y, z) {
-        return this.by( Matrix.rotate(x, y, z) );
+        return this.mul( Matrix.rotate(x, y, z) );
      }
      /**
      * the method used by the instance of Matrix to rotateX.
@@ -177,7 +177,7 @@ var Matrix = function() {
      * @return the ratation Matrix
      */
     mpt.rotateX = function(deg) {
-        return this.by( Matrix.rotateX(deg) );
+        return this.mul( Matrix.rotateX(deg) );
     }
     /**
      * the method used by the instance of Matrix to rotateY.
@@ -187,7 +187,7 @@ var Matrix = function() {
      * @return the ratation Matrix
      */
     mpt.rotateY = function(deg) {
-        return this.by( Matrix.rotateY(deg) );
+        return this.mul( Matrix.rotateY(deg) );
     }
     /**
      * the method used by the instance of Matrix to rotateZ.
@@ -197,7 +197,7 @@ var Matrix = function() {
      * @return the ratation Matrix
      */
     mpt.rotateZ = function(deg) {
-        return this.by( Matrix.rotateZ(deg) );
+        return this.mul( Matrix.rotateZ(deg) );
     }
     /**
      * the method used by the instance of Matrix to translate.
@@ -209,7 +209,7 @@ var Matrix = function() {
      * @return the translation Matrix
      */
     mpt.translate = function(x, y, z) {
-        return this.by( Matrix.translate(x, y, z) );
+        return this.mul( Matrix.translate(x, y, z) );
     }
     /**
      * the method used by the instance of Matrix to translateX.
@@ -219,7 +219,7 @@ var Matrix = function() {
      * @return the translation Matrix
      */
     mpt.translateX = function(dis) {
-        return this.by( Matrix.translateX(dis) )
+        return this.mul( Matrix.translateX(dis) )
     }
     /**
      * the method used by the instance of Matrix to translateY.
@@ -229,7 +229,7 @@ var Matrix = function() {
      * @return the translation Matrix
      */
     mpt.translateY = function(dis) {
-        return this.by( Matrix.translateY(dis) );
+        return this.mul( Matrix.translateY(dis) );
     }
     /**
      * the method used by the instance of Matrix to translateZ.
@@ -239,7 +239,7 @@ var Matrix = function() {
      * @return the translation Matrix
      */
     mpt.translateZ = function(dis) {
-        return this.by( Matrix.translateZ(dis) );
+        return this.mul( Matrix.translateZ(dis) );
     }
 
     /**
@@ -252,7 +252,7 @@ var Matrix = function() {
      * @return the scaling Matrix
      */
     mpt.scale = function(x, y, z) {
-        return this.by( Matrix.scale(x, y, z) );
+        return this.mul( Matrix.scale(x, y, z) );
     }
     /**
      * the method used by the instance of Matrix to skew.
@@ -263,7 +263,7 @@ var Matrix = function() {
      * @return the skewing Matrix
      */
     mpt.skew = function(x, y, z) {
-        return this.by( Matrix.skew(x, y, z) );
+        return this.mul( Matrix.skew(x, y, z) );
     }
     /**
      * the method used by the instance of Matrix to skewX.
@@ -273,7 +273,7 @@ var Matrix = function() {
      * @return the skewed Matrix
      */
     mpt.skewX = function(deg) {
-        return this.by( Matrix.skewX(deg) );
+        return this.mul( Matrix.skewX(deg) );
     }
     /**
      * the method attach to the Matrix to create a Matrix with an arguments as the skewing dimension relate to y axis.
@@ -283,7 +283,7 @@ var Matrix = function() {
      * @return the skewed Matrix
      */
     mpt.skewY = function(deg) {
-        return this.by( Matrix.skewY(deg) );
+        return this.mul( Matrix.skewY(deg) );
     }
 
 
@@ -341,13 +341,13 @@ var Matrix = function() {
 
     /**
      * the method attach to the Matrix to multiply two Matrix
-     * @name Matrix.by
+     * @name Matrix.mul
      * @method
      * @param {Matrix} Matrix
      * @param {Matrix} Matrix
      * @return the result Matrix
      */
-    Matrix.by = function(m1, m2) {
+    Matrix.mul = function(m1, m2) {
         var i, j, k, len1, len2, len3;
         var res = Matrix(), temp = 0;
         var test = 0;
@@ -357,7 +357,7 @@ var Matrix = function() {
                 for(k = 0, len3 = len2; k < len3; k++) {
                     temp += m1[i][k]*m2[k][j];
                 }
-                res[i][j] = toFixed( temp, 6 );
+                res[i][j] = toFixed( temp, Matrix.precision );
             }
             res[i][j] = 0;
         }
@@ -369,17 +369,17 @@ var Matrix = function() {
     }
     /**
      * the method attach to the Matrix to imply a scalar-multiply operation.
-     * @name Matrix.sby
+     * @name Matrix.smul
      * @method
      * @param {Matrix} Matrix
      * @param {Matrix} num
      * @return the result Matrix
      */
-    Matrix.sby = function(m, num) {
+    Matrix.smul = function(m, num) {
         var i, j, len1, len2;
         for(i = 0, len1 = 3; i < len1; i++) {
             for(j = 0, len2 = 3; j < len2; j++ ) {
-                m[i][j] = toFixed( m[i][j]*num, 6 );
+                m[i][j] = toFixed( m[i][j]*num, Matrix.precision );
             }
         }
         return m;
@@ -426,9 +426,9 @@ var Matrix = function() {
         var args = Matrix.formatArgs(x, y, z)
             ,m = Matrix.base()
             ;
-        m = m.by( Matrix.rotateX(args[0]) )
-            .by( Matrix.rotateY(args[1]) )
-            .by( Matrix.rotateZ(args[2]) )
+        m = m.mul( Matrix.rotateX(args[0]) )
+            .mul( Matrix.rotateY(args[1]) )
+            .mul( Matrix.rotateZ(args[2]) )
         return m;
     }
     /**
@@ -462,7 +462,7 @@ var Matrix = function() {
      */
     Matrix.rotateZ = function(deg) {
         deg = deg/180*Math.PI;
-        return Matrix(cos(deg), 0, -sin(deg), 0, 0, 1, 0, 0, sin(deg), 0, cos(deg), 0, 0, 0, 0, 1);
+        return Matrix(cos(deg), sin(deg), 0, 0, -sin(deg), cos(deg), 0, 0, 0, 0, 1, 0, 0, 0, 0, 1);
     }
 
     /**
@@ -478,9 +478,9 @@ var Matrix = function() {
         var args = Matrix.formatArgs(x, y, z)
             ,m = Matrix.base()
             ;
-        m = m.by( Matrix.translateX(args[0]) )
-            .by( Matrix.translateY( args[1] ) )
-            .by( Matrix.translateZ( args[2] ) );
+        m = m.mul( Matrix.translateX(args[0]) )
+            .mul( Matrix.translateY( args[1] ) )
+            .mul( Matrix.translateZ( args[2] ) );
         return m;
     }
     /**
@@ -533,9 +533,9 @@ var Matrix = function() {
         var args = Matrix.formatArgs(x, y, z)
             ,m = Matrix.base()
             ;
-        m = m.by( Matrix.scaleX(args[0]) )
-            .by( Matrix.scaleY(args[1]) )
-            .by( Matrix.scaleZ(args[2]) );
+        m = m.mul( Matrix.scaleX(args[0]) )
+            .mul( Matrix.scaleY(args[1]) )
+            .mul( Matrix.scaleZ(args[2]) );
         return m;
     }
     /**
@@ -587,8 +587,8 @@ var Matrix = function() {
         var args = Matrix.formatArgs(x, y, z)
             ,m = Matrix.base()
             ;
-        m = m.by( Matrix.skewX(args[0]) )
-            .by( Matrix.skewY(args[1]) );
+        m = m.mul( Matrix.skewX(args[0]) )
+            .mul( Matrix.skewY(args[1]) );
         return m;
     }
     /**
@@ -644,10 +644,10 @@ var Matrix = function() {
 }();
 
 /**
- * export the Matrix class as a node module if the enviroment is in nodejs.
+ * export the Matrix class as a node module if the enviroment is nodejs.
  * @module 
  */
-if(typeof window === "undefined") {
+if(module) {
     module.exports = Matrix;
 }
 

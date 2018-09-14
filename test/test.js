@@ -1,17 +1,110 @@
-var matrix = require("Matrix");
+const Matrix = require("../matrix");
 
-var s = new matrix(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1);
-console.log(s.toString());
+const baseMatrix = [
+  [1, 0, 0, 0],
+  [0, 1, 0, 0],
+  [0, 0, 1, 0],
+  [0, 0, 0, 1]
+];
 
-var str = "测试rotate\n";
-console.log(matrix.rotateX(45).toString(), matrix.rotateY(45).toString(), matrix.rotateZ(45).toString(), matrix.rotate(45, 45, 45).toString());
+describe('basic matrix method', () => {
+  test('api: Matrix.base()', () => {
+    expect(Matrix.base()).toEqual(new Matrix(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1));
+  });
 
-str = "测试translate\n";
-console.log(matrix.translateX(45).toString(), matrix.translateY(45).toString(), matrix.translateZ(45).toString(), matrix.translate(45, 45, 45).toString());
+  test('api: Matrix.isBase()', () => {
+    expect(Matrix.isBase(Matrix.base())).toBe(true);
+  });
 
-str = "测试scale\n";
-console.log(matrix.scaleX(45).toString(), matrix.scaleY(45).toString(), matrix.scaleZ(45).toString(), matrix.scale(45, 45, 45).toString());
+  test('api: Matrix.prototype.toString()', () => {
+    const m1 = new Matrix(1,0,0,0,0,1,0,0,0,0,1,0,10,10,10,1);
+    expect(m1.toString()).toBe('matrix3d(1,0,0,0,0,1,0,0,0,0,1,0,10,10,10,1)');
+  });
 
-str = "测试skew\n";
-console.log(matrix.skewX(45).toString(), matrix.skewY(45).toString(), matrix.skew(45, 45).toString());
+  test('api: Matrix.mul()', () => {
+    const m1 = new Matrix(1,0,0,0,0,1,0,0,0,0,1,0,10,10,10,1);
+    const m2 = new Matrix(2,0,0,0,0,2,0,0,0,0,2,0,0,0,0,1);
+    expect(Matrix.mul(m1, m2)).toEqual(new Matrix(10,0,0,0,0,10,0,0,0,0,10,0,10,10,10,1));
+  });
 
+  test('api: Matrix.smul()', () => {
+    const m1 = new Matrix(10,0,0,0,0,10,0,0,0,0,10,0,10,10,10,1);
+    expect(Matrix.smul(m1, 0.8)).toEqual(new Matrix(1.6,0,0,0,0,1.6,0,0,0,0,1.6,0,10,10,10,1));
+  });
+
+  test('api: Matrix.formatArgs()', () => {
+    expect(Matrix.formatArgs(1,2,3)).toEqual([1,2,3]);
+  });
+
+  test('api: Matrix.rotate()', () => {
+    expect(Matrix.rotate(10, 10, 10)).toEqual(new Matrix(0.939693,-0.059391,-0.336824,0,0,0.984808,-0.173648,0,0.34202,0.163176,0.925418,0,0,0,0,1));
+  });
+
+  test('api: Matrix.rotateX()', () => {
+    expect(Matrix.rotateX(10)).toEqual(new Matrix(1,0,0,0,0,0.984808,-0.173648,0,0,0.173648,0.984808,0,0,0,0,1));
+  });
+
+  test('api: Matrix.rotateY()', () => {
+    expect(Matrix.rotateY(10)).toEqual(new Matrix(0.984808,0,-0.173648,0,0,1,0,0,0.173648,0,0.984808,0,0,0,0,1));
+  });
+
+  test('api: Matrix.rotateZ()', () => {
+    expect(Matrix.rotateZ(10)).toEqual(new Matrix(0.984808,0.173648,0,0,-0.173648,0.984808,0,0,0,0,1,0,0,0,0,1));
+  });
+
+  test('api: Matrix.rotateZ()', () => {
+    expect(Matrix.rotateZ(10)).toEqual(new Matrix(0.984808,0.173648,0,0,-0.173648,0.984808,0,0,0,0,1,0,0,0,0,1));
+  });
+
+  test('api: Matrix.translate()', () => {
+    expect(Matrix.translate(10, 10, 10)).toEqual(new Matrix(1,0,0,0,0,1,0,0,0,0,1,0,10,10,10,1));
+  });
+
+  test('api: Matrix.translateX()', () => {
+    expect(Matrix.translateX(10)).toEqual(new Matrix(1,0,0,0,0,1,0,0,0,0,1,0,10,0,0,1));
+  });
+
+  test('api: Matrix.translateY()', () => {
+    expect(Matrix.translateY(10)).toEqual(new Matrix(1,0,0,0,0,1,0,0,0,0,1,0,0,10,0,1));
+  });
+
+  test('api: Matrix.translateZ()', () => {
+    expect(Matrix.translateZ(10)).toEqual(new Matrix(1,0,0,0,0,1,0,0,0,0,1,0,0,0,10,1));
+  });
+
+  test('api: Matrix.scale()', () => {
+    expect(Matrix.scale(2, 2, 2)).toEqual(new Matrix(2,0,0,0,0,2,0,0,0,0,2,0,0,0,0,1));
+  });
+
+  test('api: Matrix.scaleX()', () => {
+    expect(Matrix.scaleX(2)).toEqual(new Matrix(2,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1));
+  });
+
+  test('api: Matrix.scaleY()', () => {
+    expect(Matrix.scaleY(2)).toEqual(new Matrix(1,0,0,0,0,2,0,0,0,0,1,0,0,0,0,1));
+  });
+
+  test('api: Matrix.scaleZ()', () => {
+    expect(Matrix.scaleZ(2)).toEqual(new Matrix(1,0,0,0,0,1,0,0,0,0,2,0,0,0,0,1));
+  });
+
+  test('api: Matrix.skew()', () => {
+    expect(Matrix.skew(20, 20)).toEqual(new Matrix(1,0.36397,0,0,0.36397,1.132474,0,0,0,0,1,0,0,0,0,1));
+  });
+
+  test('api: Matrix.skewX()', () => {
+    expect(Matrix.skewX(20)).toEqual(new Matrix(1,0.36397,0,0,0,1,0,0,0,0,1,0,0,0,0,1));
+  });
+
+  test('api: Matrix.skewY()', () => {
+    expect(Matrix.skewY(20)).toEqual(new Matrix(1,0,0,0,0.36397,1,0,0,0,0,1,0,0,0,0,1));
+  });
+
+  test('api: Matrix.deg2arc()', () => {
+    expect(Matrix.deg2arc(30)).toEqual(30/180*Math.PI);
+  });
+
+  test('api: Matrix.arc2deg()', () => {
+    expect(Matrix.arc2deg(1)).toEqual(1/Math.PI*180);
+  });
+})

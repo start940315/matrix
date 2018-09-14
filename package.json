@@ -2,10 +2,6 @@
   "name": "Matrix",
   "version": "1.0.0",
   "description": "This is a tiny repository to give us an easy way to manipulate the matrix3d value of transform in css3.",
-  "keywords": [
-    "demo",
-    "test/test.js"
-  ],
   "author": "Startan",
   "license": "MIT",
   "main": "matrix.js",
@@ -17,10 +13,10 @@
     "url": "https://github.com/start940315/matrix/issues"
   },
   "homepage": "https://github.com/start940315/matrix",
-  "directories": {
-    "test": "test"
-  },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jest --config test.config.json"
+  },
+  "devDependencies": {
+    "jest": "^23.6.0"
   }
 }
