@@ -13,16 +13,16 @@ Matrix &middot; [![Coverage Status](https://coveralls.io/repos/github/start94031
 		console.log(cssStr);
 		//控制台输出的结果就为：matrix3d(0,-0.353554,-0.353554,0,0,0,0,0,0,0,0,0,200,0,0,1)
 
-4. 如果你想合并两个变换，你可以使用 `by` 方法。比如
+4. 如果你想合并两个变换，你可以使用 `mul` 方法。比如
 
 		var m1 = new Matrix.base();
 		var m2 = new Matrix.base();
 		m1 = m1.translateX(100).rotateX(90);
 		m2 = m2.skewX(10).scale(1.2);
-		var res = Matrix.by(m1, m2); //这里是m1左乘m2，同时还可以使用m1.by(m2) / m2.rby(m1);
+		var res = Matrix.mul(m1, m2); //这里是m1左乘m2，同时还可以使用m1.mul(m2) / m2.rmul(m1);
 		//res即为先进行m1变换，在进行m2变换的结果
 
-5. 同时，如果你想让一个元素执行一个过渡的变换，可以使用数乘的方法 `sby` 。比如
+5. 同时，如果你想让一个元素执行一个过渡的变换，可以使用数乘的方法 `smul` 。比如
 
 		var nowM = Matrix.base();
 		var m1 = Matrix.base().scale(1.5).translateY(90);
@@ -30,7 +30,7 @@ Matrix &middot; [![Coverage Status](https://coveralls.io/repos/github/start94031
 		var tar = 1;
 		var el = ANY_DOM;
 		function animate() {
-			el.style.transform = nowM.by( m1.sby(now) );//这里js会自动调用toString方法，不需要在这里手动调用
+			el.style.transform = nowM.mul( m1.smul(now) );//这里js会自动调用toString方法，不需要在这里手动调用
 			now += 0.05;
 			if( now <= tar ) {
 				requestAnimationFrame(animate);
