@@ -1,6 +1,6 @@
 {
   "name": "Matrix",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "This is a tiny repository to give us an easy way to manipulate the matrix3d value of transform in css3.",
   "author": "Startan",
   "license": "MIT",
